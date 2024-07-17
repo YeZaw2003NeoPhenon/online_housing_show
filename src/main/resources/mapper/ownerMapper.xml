@@ -1,0 +1,35 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "C:\Users\Acer\Desktop\mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.online_housing_show.repository.ownerRepository">
+
+    <resultMap id="OwnerResultMap" type="Owner">
+        <id column="id" property="id"/>
+        <result column="owner_user_name" property="owner_user_name"/>
+        <result column="owner_name" property="owner_name"/>
+        <result column="owner_email" property="owner_email"/>
+        <result column="password" property="password"/>
+        <result column="created_date" property="created_date"/>
+        <result column="updated_date" property="updated_date"/>
+    </resultMap>
+
+    <insert id="saveOwnerAccount" parameterType="Owner" keyProperty="id" useGeneratedKeys="true">
+   	 INSERT INTO owners 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="owner_user_name != null">owner_user_name,</if>
+            <if test="owner_name != null">owner_name,</if>
+            <if test="owner_email != null">owner_email,</if>
+            <if test="password != null">password,</if>
+            <if test="created_date != null">created_date,</if>
+            <if test="updated_date != null">updated_date,</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="owner_user_name != null">#{owner_user_name},</if>
+            <if test="owner_name != null">#{owner_name},</if>
+            <if test="owner_email != null">#{owner_email},</if>
+            <if test="password != null">#{password},</if>
+            <if test="created_date != null">#{created_date},</if>
+            <if test="updated_date != null">#{updated_date},</if>
+        </trim>
+    </insert>
+
+</mapper>

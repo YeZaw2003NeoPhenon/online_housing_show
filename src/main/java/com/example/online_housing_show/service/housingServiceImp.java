@@ -34,7 +34,8 @@ public class housingServiceImp implements housingService{
 //	}
 //	
 	  public List<Housing> getAllHousings(int page, int size, String housingName, Integer floors, Integer masterRoom, Integer singleRoom, Double amount, String postedDate) {
-	        int offset = page * size;
+	    		  int offset = (page - 1) * size;
+		  System.out.println("Offset: " + offset + ", Size: " + size);
 	        return housingRepository.getAllHousings(offset, size, housingName, floors, masterRoom, singleRoom, amount, postedDate);
 	    }
 }

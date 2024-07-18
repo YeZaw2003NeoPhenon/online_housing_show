@@ -64,7 +64,7 @@ Create a database named housing_db.
 ```./mvnw spring-boot:run```
 
 ### Accessing APIs
-[!NOTE]
+> [!NOTE]
 **Use tools like Postman to interact with the APIs:
 Public API: http://localhost:8080/api/housings/?page=1&size=10&housingName=Brimming%20Ground%20Field&floors=12
 Private API: Authenticate first and use tokens to access owner-specific endpoints.**

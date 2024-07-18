@@ -44,9 +44,8 @@ Search housing by housingName, floors, masterRoom, singleRoom, amount, or posted
 ### Public API (Visitor Access)
 **GET /api/housings/: Retrieve all housings with pagination and search options.**
 
-> [!TIP]
 ### Setup Instructions
-
+> [!TIP]
 **Clone the Repository**
 ```
 git clone https://github.com/your-username/online-housing-showcase.git
@@ -67,7 +66,6 @@ Create a database named housing_db.
 
 ### Accessing APIs
 > [!NOTE]
-
 **Use tools like Postman to interact with the APIs:
 Public API: http://localhost:8080/api/housings/?page=1&size=10&housingName=Brimming%20Ground%20Field&floors=12
 Private API: Authenticate first and use tokens to access owner-specific endpoints.**

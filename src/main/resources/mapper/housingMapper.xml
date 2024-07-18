@@ -23,11 +23,32 @@
     </association>
   </resultMap>
     
-    <insert id="saveHousing" parameterType="Housing">
-        INSERT INTO housings (housing_name, address, number_of_floors, number_of_master_room, number_of_single_room, amount, owner_id, created_date , updated_date)
-        VALUES (#{housing_name}, #{address}, #{number_of_floors}, #{number_of_master_room}, #{number_of_single_room}, #{amount}, #{owner_id}, #{created_date} , #{updated_date})
-    </insert>
     
+     <insert id = "saveHousing" parameterType = "Housing" keyProperty = "id" useGeneratedKeys = "true">
+  		     INSERT INTO housings  
+         	<trim prefix = "(" suffix = ")" suffixOverrides = ",">
+         		<if test="housing_name != null">housing_name,</if>
+            	<if test="address != null">address,</if>
+           		<if test="number_of_floors != null">number_of_floors,</if>
+           		<if test="number_of_master_room != null">number_of_master_room,</if>
+           		<if test="number_of_single_room != null">number_of_single_room,</if>
+           		<if test="amount != null">amount,</if>
+           		<if test="owner_id != null">owner_id,</if>
+           	    <if test="created_date != null">created_date,</if>
+           	    <if test="updated_date != null">updated_date,</if>
+         	</trim>
+         	<trim prefix = "VALUES (" suffix = ")" suffixOverrides = ",">
+        		<if test="housing_name != null">#{housing_name},</if>
+            	<if test="address != null">#{address},</if>
+           		<if test="number_of_floors != null">#{number_of_floors},</if> 	
+           		<if test="number_of_master_room != null">#{number_of_master_room},</if> 
+           		<if test="number_of_single_room != null">#{number_of_single_room},</if>
+           		<if test="amount != null">#{amount},</if>	
+           		<if test="owner_id != null">#{owner_id},</if>
+           	    <if test="created_date != null">#{created_date},</if>
+           	    <if test="updated_date != null">#{updated_date},</if>
+               </trim>
+  	</insert>
     <update id="editHousing" parameterType="Housing">
         UPDATE housings
         <set>
@@ -69,7 +90,7 @@
 	</select>
 	 -->
 	 
-<select id="getAllHousings" resultMap="HousingResultMapWithOwnersMap">
+ <select id="getAllHousings" resultMap="HousingResultMapWithOwnersMap">
     SELECT h.id, h.housing_name, h.address, h.number_of_floors,
            h.number_of_master_room, h.number_of_single_room, h.amount,
            h.owner_id, h.created_date, h.updated_date,
@@ -79,5 +100,6 @@
    
     LIMIT #{size} OFFSET #{offset}
 </select>
-    
+
+
 </mapper>

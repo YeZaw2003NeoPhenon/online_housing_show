@@ -46,7 +46,7 @@ public class housingController {
 //    }
     
     @RequestMapping( value = "/", method = RequestMethod.GET , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Housing>> getAllHousings(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<List<Housing>> getAllHousings(@RequestParam(defaultValue = "1") int page,
                                                        @RequestParam(defaultValue = "10") int size,
                                                         @RequestParam(required = false) String housingName,
                                                         @RequestParam(required = false) Integer floors,

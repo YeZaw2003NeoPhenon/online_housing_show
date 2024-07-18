@@ -35,7 +35,7 @@ Search housing by housingName, floors, masterRoom, singleRoom, amount, or posted
 ## API Endpoints
 
 ### Private API (Owner Access)
- [!IMPORTANT]
+ > [!IMPORTANT]
 **GET /api/housings/: Retrieve all housings with pagination and filtering options.**[^1]
 **POST /api/housings/: Create a new housing listing.**[^2]
 **PUT /api/housings/{id}: Update an existing housing listing.**[^3]
@@ -44,7 +44,7 @@ Search housing by housingName, floors, masterRoom, singleRoom, amount, or posted
 ### Public API (Visitor Access)
 **GET /api/housings/: Retrieve all housings with pagination and search options.**
 
-[!TIP]
+> [!TIP]
 ### Setup Instructions
 
 **Clone the Repository**
@@ -53,18 +53,21 @@ git clone https://github.com/your-username/online-housing-showcase.git
 cd online-housing-showcase
 ```
 **Database Setup**
-[!IMPORTANT]
+> [!IMPORTANT]
 #0969DA Ensure PostgreSQL is installed and running.
 Create a database named housing_db.
 
 **Application Configuration**
-#0969DA Open src/main/resources/application.properties and configure your database connection.
+ <article>
+  <span style = "color:blue; font-weight:bold;">Open src/main/resources/application.properties and configure your database connection.</span>
+ </article>
 
 **Run The Application**
 ```./mvnw spring-boot:run```
 
 ### Accessing APIs
 > [!NOTE]
+
 **Use tools like Postman to interact with the APIs:
 Public API: http://localhost:8080/api/housings/?page=1&size=10&housingName=Brimming%20Ground%20Field&floors=12
 Private API: Authenticate first and use tokens to access owner-specific endpoints.**

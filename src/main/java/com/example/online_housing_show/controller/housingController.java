@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.online_housing_show.service.housingServiceImp;
+import com.example.online_housing_show.service.userDetailServiceImp;
 import com.example.online_housing_show.model.Housing;
 
 @RestController
@@ -16,6 +17,9 @@ public class housingController {
 	
 	@Autowired
 	private housingServiceImp housingServiceImp;
+	
+	@Autowired
+	private userDetailServiceImp userDetailServiceImp;
 	
 	   @RequestMapping(value = "/create", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE , consumes = MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<Object> createHousing(@RequestBody Housing housingDTO) {
@@ -54,8 +58,10 @@ public class housingController {
                                                         @RequestParam(required = false) Integer singleRoom,
                                                         @RequestParam(required = false) Double amount,
                                                         @RequestParam(required = false) String postedDate) {
-        List<Housing> housings = housingServiceImp.getAllHousings(page, size, housingName, floors, masterRoom, singleRoom, amount, postedDate);
-        
+     String current_username =   userDetailServiceImp.getCurrentUser();
+     System.out.println("Current logged in user: " + current_username);
+     
+     List<Housing> housings = housingServiceImp.getAllHousings(page, size, housingName, floors, masterRoom, singleRoom, amount, postedDate);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(housings);
     }
 }

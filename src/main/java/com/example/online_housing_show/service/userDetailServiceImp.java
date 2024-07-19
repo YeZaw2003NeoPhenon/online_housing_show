@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -52,6 +54,22 @@ public class userDetailServiceImp implements UserDetailsService{
 		}
 		
 		return new BCryptPasswordEncoder().matches(password, userDetailModel.getPassword());
+	}
+	
+	public String getCurrentUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		if( authentication != null && authentication.isAuthenticated()) {
+			Object principal = authentication.getPrincipal();
+			
+			if( principal instanceof userDetailModel ) {
+				return ((userDetailModel) principal).getUsername();
+			}
+			else {
+				return principal.toString();
+			}
+		}
+		return null;
 	}
 	
 }

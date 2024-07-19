@@ -36,10 +36,10 @@ Search housing by housingName, floors, masterRoom, singleRoom, amount, or posted
 
 ### Private API (Owner Access)
  > [!IMPORTANT]
-**GET /api/housings/: Retrieve all housings with pagination and filtering options.**[^1]
-**POST /api/housings/: Create a new housing listing.**[^2]
-**PUT /api/housings/{id}: Update an existing housing listing.**[^3]
-**DELETE /api/housings/{id}: Delete a housing listing.**[^4]
+**GET /api/housings/: Retrieve all housings with pagination and filtering options[^1].**
+**POST /api/housings/: Create a new housing listing[^2].**
+**PUT /api/housings/{id}: Update an existing housing listing[^3].**
+**DELETE /api/housings/{id}: Delete a housing listing[^4].**
 
 ### Public API (Visitor Access)
 **GET /api/housings/: Retrieve all housings with pagination and search options.**

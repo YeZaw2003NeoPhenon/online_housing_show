@@ -17,9 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import com.example.online_housing_show.service.userDetailServiceImp;
 
+import jakarta.security.auth.message.callback.PrivateKeyCallback.Request;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +52,6 @@ public class webSecurityConfigure {
 		authenticationProvider.setUserDetailsService(userDetailServiceImp);
 		return authenticationProvider;
 	}
-
 	@Bean
 	public SecurityFilterChain filterChain( HttpSecurity httpSecurity ) throws Exception {
 	
@@ -83,14 +85,15 @@ public class webSecurityConfigure {
 								}
 								
 								if( remember_me != null ) {
-									request.getSession().setAttribute(" Custom-Remember-Me",remember_me);
+									request.getSession().setAttribute("Custom-Remember-Me",remember_me);
 								}
 								
 								String username = authentication.getName();
-					SecurityContextHolder.getContext().setAuthentication(authentication);
-						Cookie successCookie = new Cookie("successCookie", "true");
+								SecurityContextHolder.getContext().setAuthentication(authentication);
+								Cookie successCookie = new Cookie("successCookie", "true");
 								successCookie.setPath("/");
 								successCookie.setHttpOnly(true);
+								
 								response.addCookie(successCookie);
 								response.setStatus(HttpServletResponse.SC_OK);
 								response.sendRedirect("/");
@@ -100,21 +103,50 @@ public class webSecurityConfigure {
 						.failureHandler(new AuthenticationFailureHandler() {
 							
 							@Override
-  			public void onAuthenticationFailur(HttpServletRequest request, HttpServletResponse response,
-				AuthenticationException exception) throws IOException, ServletException {
+							public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+									AuthenticationException exception) throws IOException, ServletException {
 		                        Cookie failureCookie = new Cookie("failureCookie", "true");
 		                        failureCookie.setPath("/");
 		                        failureCookie.setHttpOnly(true);
 		                        response.addCookie(failureCookie);
 		                        response.sendRedirect("/api/authenticate?errorPopedUp=true");
-								
 							}
 						})
 						.and()
 						
 						.logout()
 						.logoutUrl("/logout")
-						.logoutSuccessUrl("/api/authenticate?logout=success")
+						.addLogoutHandler(new LogoutHandler() {
+							
+							@Override
+							public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+								
+								if( request.getCookies() != null ) {
+									for( Cookie cookie : request.getCookies() ) {
+										cookie.setValue("");
+										cookie.setPath("/");
+										cookie.setMaxAge(0);
+										cookie.setHttpOnly(true);
+										response.setStatus(HttpServletResponse.SC_OK);
+										response.addCookie(cookie);
+									}
+								}
+								
+							}
+						})
+						.logoutSuccessHandler(new LogoutSuccessHandler() {
+							
+							@Override
+							public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+									throws IOException, ServletException {
+								
+								SecurityContextHolder.clearContext();
+								
+								request.getSession().removeAttribute("Custom-Remember-Me");
+								System.out.println(" LOG OUT Triumphantly Elevated for User: " + (authentication != null ? authentication.getName() : "Unknown"));
+								response.sendRedirect("/api/authenticate?logout=success");
+							}
+						})
 						.invalidateHttpSession(true)
 						.deleteCookies("JSESSIONID")
 						

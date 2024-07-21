@@ -97,9 +97,12 @@
            o.id AS owner_id, o.owner_user_name, o.owner_name, o.owner_email
     FROM housings h
     INNER JOIN owners o ON h.owner_id = o.id
-   
     LIMIT #{size} OFFSET #{offset}
 </select>
 
+<select id = "getTotalCount" resultType = "long">
+	SELECT COUNT(*) FROM housings h 
+	INNER JOIN owners o ON h.owner_id = o.id;
+</select>
 
 </mapper>

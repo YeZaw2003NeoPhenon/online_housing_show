@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.online_housing_show.model.Housing;
@@ -33,9 +36,23 @@ public class housingServiceImp implements housingService{
 //		return housingRepository.getAllHousings();
 //	}
 //	
-	  public List<Housing> getAllHousings(int page, int size, String housingName, Integer floors, Integer masterRoom, Integer singleRoom, Double amount, String postedDate) {
-	    		  int offset = (page - 1) * size;
+	@Override
+	  public Page<Housing> getAllHousings(Pageable pageable , String housingName, Integer floors, Integer masterRoom, Integer singleRoom, Double amount, String postedDate) {
+			int offset = pageable.getPageNumber() * pageable.getPageSize();
+			int size = pageable.getPageSize();
 		  System.out.println("Offset: " + offset + ", Size: " + size);
-	        return housingRepository.getAllHousings(offset, size, housingName, floors, masterRoom, singleRoom, amount, postedDate);
+	        List<Housing>  housings =  housingRepository.getAllHousings(offset , size, housingName, floors, masterRoom, singleRoom, amount, postedDate);
+	        
+	        long total = getTotalCount(housingName, floors, masterRoom, singleRoom, amount, postedDate);
+	        
+	        return new PageImpl<Housing>(housings , pageable , total);
 	    }
+	  
+		@Override 
+		 public long getTotalCount( String housingName, Integer floors, Integer masterRoom, Integer singleRoom, Double amount, String postedDate
+				 ) {
+	        // Delegate to the mapper to get the total count of filtered records
+	        return housingRepository.getTotalCount(housingName, floors, masterRoom, singleRoom, amount, postedDate);
+	    }
+		
 }

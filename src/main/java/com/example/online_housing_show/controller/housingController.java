@@ -1,8 +1,9 @@
 package com.example.online_housing_show.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -50,8 +51,8 @@ public class housingController {
 //    }
     
     @RequestMapping( value = "/", method = RequestMethod.GET , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Housing>> getAllHousings(@RequestParam(defaultValue = "1") int page,
-                                                       @RequestParam(defaultValue = "10") int size,
+    public ResponseEntity<Page<Housing>> getAllHousings(@RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size,
                                                         @RequestParam(required = false) String housingName,
                                                         @RequestParam(required = false) Integer floors,
                                                         @RequestParam(required = false) Integer masterRoom,
@@ -60,8 +61,9 @@ public class housingController {
                                                         @RequestParam(required = false) String postedDate) {
      String current_username =   userDetailServiceImp.getCurrentUser();
      System.out.println("Current logged in user: " + current_username);
+     Pageable pageable = PageRequest.of(page, size);
      
-     List<Housing> housings = housingServiceImp.getAllHousings(page, size, housingName, floors, masterRoom, singleRoom, amount, postedDate);
+     Page<Housing> housings = housingServiceImp.getAllHousings(pageable, housingName, floors, masterRoom, singleRoom, amount, postedDate);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(housings);
     }
 }
